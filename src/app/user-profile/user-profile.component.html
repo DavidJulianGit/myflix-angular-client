@@ -1,0 +1,187 @@
+<!-- user-profile.component.html -->
+
+<!-- Angular Material Navigation Bar -->
+<mat-toolbar>
+  <div class="navbar-content-container">
+    <span>MYFLIX</span>
+    <div>
+      <button mat-button class="nav-button" (click)="redirectMovieCard()">
+        Movies
+      </button>
+      <button mat-button class="nav-button" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</mat-toolbar>
+
+<div class="user-profile-content-container">
+  <!--Favorite Movies -->
+  <div class="favorite-movies-header">
+    <h2>Favorite Movies</h2>
+    <button mat-icon-button (click)="toggleFavoriteMovies()">
+      <mat-icon>{{
+        showFavoriteMovies ? "keyboard_arrow_up" : "keyboard_arrow_down"
+      }}</mat-icon>
+    </button>
+  </div>
+
+  <div class="movie-cards-container" *ngIf="showFavoriteMovies">
+    <mat-card
+      *ngFor="let movie of favoriteMovies"
+      class="movie-card"
+      appearance="outlined"
+    >
+      <mat-card-header>
+        <mat-card-title>{{ movie.title }}</mat-card-title>
+        <mat-card-subtitle
+          >Directed by: {{ movie.director.name }}</mat-card-subtitle
+        >
+      </mat-card-header>
+      <img class="mat-card-img" [src]="movie.poster" alt="{{ movie.title }}" />
+      <mat-card-actions class="mat-card-ations">
+        <button mat-button color="primary" (click)="openGenreDialog(movie)">
+          Genre
+        </button>
+        <button mat-button color="primary" (click)="openDirectorDialog(movie)">
+          Director
+        </button>
+        <button
+          mat-button
+          color="primary"
+          (click)="openMovieDetailsDialog(movie)"
+        >
+          Details
+        </button>
+        <button mat-button color="primary" (click)="toggleFavorite(movie._id)">
+          <mat-icon style="margin: 0 auto">
+            {{ isFavorite(movie._id) ? "favorite" : "favorite_border" }}
+          </mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div *ngIf="favoriteMovies.length === 0">
+      Your list of favorite movies is unfortunately still empty. :(
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- Account Information and edit user data form  -->
+  <form (ngSubmit)="updateUserData()" class="form-userProfile">
+    <h2>Account Information</h2>
+    <mat-form-field appearance="outline" class="mat-form-field-user">
+      <mat-label>First Name</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="localUser.firstname"
+        name="firstname"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="mat-form-field-user">
+      <mat-label>Last Name</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="localUser.lastname"
+        name="lastname"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="mat-form-field-user">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        [(ngModel)]="localUser.email"
+        name="email"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="mat-form-field-user">
+      <mat-label>Birthday</mat-label>
+      <input
+        matInput
+        type="date"
+        [(ngModel)]="localUser.birthday"
+        name="birthday"
+        required
+      />
+    </mat-form-field>
+    <div>
+      <button mat-raised-button color="primary" type="submit">Save</button>
+    </div>
+  </form>
+
+  <!-- Change Password form -->
+  <form (ngSubmit)="changePassword()" class="form-userProfile">
+    <h4>Change Password</h4>
+    <mat-form-field appearance="outline" class="mat-form-field-user">
+      <mat-label>New Password</mat-label>
+      <input
+        matInput
+        type="{{ passwordShown ? 'text' : 'password' }}"
+        [(ngModel)]="newPassword"
+        name="newPassword"
+        required
+      />
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+        <mat-icon>{{
+          passwordShown ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="mat-form-field-user">
+      <mat-label>Repeat Password</mat-label>
+      <input
+        matInput
+        type="{{ passwordShown ? 'text' : 'password' }}"
+        [(ngModel)]="newPasswordRepeat"
+        name="newPasswordRepeat"
+        required
+      />
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="
+        !(newPassword && newPasswordRepeat && newPassword === newPasswordRepeat)
+      "
+    >
+      Change Password
+    </button>
+  </form>
+
+  <!-- Account Deletion Form -->
+  <form class="form-userProfile">
+    <h3>Delete Account</h3>
+    <p>
+      To confirm account deletion, type:
+      <span style="font-style: italic">{{ stringToDeleteAccount }}</span>
+      into the box below.
+    </p>
+    <mat-form-field appearance="outline" class="mat-form-field-user">
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="deleteAccountCheck"
+        name="deleteAccountCheck"
+        required
+      />
+    </mat-form-field>
+    <div>
+      <button
+        mat-raised-button
+        color="warn"
+        type="button"
+        [disabled]="deleteAccountCheck !== stringToDeleteAccount"
+        (click)="openDeleteDialog()"
+        style="margin-bottom: 2rem"
+      >
+        Delete Account
+      </button>
+    </div>
+  </form>
+</div>

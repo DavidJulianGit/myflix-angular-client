@@ -1,0 +1,63 @@
+<!-- Angular Material Navigation Bar -->
+<mat-toolbar>
+  <div class="navbar-content-container">
+    <span>MYFLIX</span>
+    <div>
+      <button mat-button class="nav-button" (click)="redirectProfile()">
+        User Profile
+      </button>
+      <button mat-button class="nav-button" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</mat-toolbar>
+
+<!-- Display the spinner when loading is true -->
+<mat-spinner *ngIf="loading" class="loading-spinner"></mat-spinner>
+
+<div class="movie-cards-container">
+  <mat-card
+    *ngFor="let movie of movies"
+    class="movie-card"
+    appearance="outlined"
+  >
+    <mat-card-header>
+      <mat-card-title
+        (click)="openMovieDetailsDialog(movie)"
+        class="clickable"
+        >{{ movie.title }}</mat-card-title
+      >
+      <mat-card-subtitle
+        >Directed by: {{ movie.director.name }}</mat-card-subtitle
+      >
+    </mat-card-header>
+
+    <!-- Make the image clickable to open Movie Details -->
+    <img
+      class="mat-card-img clickable"
+      [src]="movie.poster"
+      alt="{{ movie.title }}"
+      (click)="openMovieDetailsDialog(movie)"
+    />
+
+    <mat-card-actions class="mat-card-ations">
+      <button mat-button color="primary" (click)="openGenreDialog(movie)">
+        Genre
+      </button>
+      <button mat-button color="primary" (click)="openDirectorDialog(movie)">
+        Director
+      </button>
+      <button
+        mat-button
+        color="primary"
+        (click)="openMovieDetailsDialog(movie)"
+      >
+        Details
+      </button>
+      <button mat-button color="primary" (click)="toggleFavorite(movie._id)">
+        <mat-icon style="margin: 0 auto">
+          {{ isFavorite(movie._id) ? "favorite" : "favorite_border" }}
+        </mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,0 +1,68 @@
+<h2 mat-dialog-title>
+  {{ movie.title }}
+</h2>
+
+<mat-dialog-content>
+  <div class="movie-details-container">
+    <!-- Image Section -->
+    <div class="movie-poster">
+      <img [src]="movie.poster" alt="Movie Poster" class="poster-image" />
+    </div>
+    <!-- Text Details Section -->
+    <div class="movie-info">
+      <div class="movie-info-section">
+        <p><strong>Description:</strong> {{ movie.description }}</p>
+        <p><strong>IMDB Rating:</strong> {{ movie.imdbRating }}</p>
+        <p><strong>IMDB Votes:</strong> {{ movie.imdbVotes }}</p>
+        <p><strong>IMDB ID:</strong> {{ movie.imdbID }}</p>
+        <p><strong>Year:</strong> {{ movie.year | date : "yyyy" }}</p>
+        <p><strong>Rated:</strong> {{ movie.rated }}</p>
+        <p><strong>Released:</strong> {{ movie.released }}</p>
+        <p><strong>Runtime:</strong> {{ movie.runtime }}</p>
+      </div>
+      <div class="movie-info-section">
+        <p>
+          <strong>Genres:</strong>
+          <span *ngFor="let genre of movie.genres">
+            {{ genre.name
+            }}{{ genre !== movie.genres[movie.genres.length - 1] ? ", " : "" }}
+          </span>
+        </p>
+        <p><strong>Director:</strong> {{ movie.director.name }}</p>
+        <p><strong>Director Bio:</strong> {{ movie.director.bio }}</p>
+        <p>
+          <strong>Director Birth:</strong>
+          {{ movie.director.birth | date : "longDate" }}
+        </p>
+        <p *ngIf="movie.director.death">
+          <strong>Director Death:</strong>
+          {{ movie.director.death | date : "longDate" }}
+        </p>
+      </div>
+      <div class="movie-info-section">
+        <p><strong>Writer:</strong> {{ movie.writer }}</p>
+        <p><strong>Actors:</strong> {{ movie.actors }}</p>
+        <p><strong>Language:</strong> {{ movie.language }}</p>
+        <p><strong>Country:</strong> {{ movie.country }}</p>
+        <p><strong>Awards:</strong> {{ movie.awards }}</p>
+        <p><strong>Metascore:</strong> {{ movie.metascore }}</p>
+        <p><strong>Type:</strong> {{ movie.type }}</p>
+      </div>
+    </div>
+  </div>
+  <!-- Images Section -->
+  <div class="movie-images">
+    <strong>Images:</strong>
+    <div class="image-gallery">
+      <img
+        *ngFor="let image of movie.images"
+        [src]="image"
+        alt="Movie Image"
+        class="movie-image"
+      />
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

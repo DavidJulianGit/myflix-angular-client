@@ -27,11 +27,12 @@ $myflix-angular-client-theme: mat.define-theme(
 // that you are using.
 :root {
   @include mat.all-component-themes($myflix-angular-client-theme);
+  box-sizing: border-box;
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.
 // For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
-// @include mat.typography-hierarchy($myflix-angular-client-theme);
+@include mat.typography-hierarchy($myflix-angular-client-theme);
 
 // Comment out the line below if you want to use the deprecated `color` inputs.
 // @include mat.color-variants-backwards-compatibility($myflix-angular-client-theme);
@@ -44,4 +45,165 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+h2 {
+  size: 2rem;
+  text-transform: uppercase;
+}
+.mat-card-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin-top: 0.5rem;
+}
+.mat-icon {
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 13px;
+  &:hover {
+    color: red;
+  }
+}
+.mat-card-padding {
+  padding: 1.5rem;
+}
+
+.mat-card-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Container to hold movie cards */
+.movie-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+.movie-card {
+  width: 300px;
+  margin: 1rem;
+}
+
+/* ----------------------------------- movie details -----------------------------------*/
+.movie-details-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  .movie-poster {
+    flex: 1 1 300px; // Flex basis of 300px and allow growth/shrink
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .poster-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .movie-info {
+    flex: 2 1 400px; // Flex basis of 400px and allow growth/shrink
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .movie-info-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+}
+
+.movie-images {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .movie-image {
+      flex: 1 1 150px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.movie-details-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.loading-spinner {
+  display: block;
+  margin: 50px auto;
+}
+
+/*-------------------------------- Navbar --------------------------------- */
+mat-toolbar.mat-toolbar {
+  background-color: #015cbb;
+  color: white !important;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.navbar-content-container {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px; // Add some padding on the sides
+}
+.nav-button.mat-mdc-button {
+  color: rgba(255, 255, 255, 0.904) !important;
+
+  &:hover {
+    background-color: transparent;
+    color: white !important;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+// Override Material's default focus styles
+.mat-mdc-button .mat-mdc-button-persistent-ripple::before {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+/* Spacer to push buttons to the right */
+
+.navbar-content-container {
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/*--------------------- movie cards clickable ------------------------------ */
+/* Style for clickable elements (movie card image and title)*/
+.clickable {
+  cursor: pointer;
+}
+.clickable:hover {
+  opacity: 0.8; /* Slightly reduce the opacity on hover */
 }

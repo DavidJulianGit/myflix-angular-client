@@ -37,12 +37,15 @@
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "@angular/material/prebuilt-themes/cyan-orange.css",
+              "src/styles.scss"
             ],
             "scripts": []
           },
           "configurations": {
+            "github-pages": {
+              "baseHref": "/myflix-angular-client/"
+            },
             "production": {
               "budgets": [
                 {
@@ -93,9 +96,15 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "@angular/material/prebuilt-themes/cyan-orange.css",
+              "src/styles.scss"
+            ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }

@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Genres</h2>
+<mat-dialog-content>
+  <div *ngFor="let genre of genres" class="genre-details">
+    <strong>{{ genre.name }}</strong>
+    <p>{{ genre.description }}</p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

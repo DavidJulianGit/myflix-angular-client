@@ -1,0 +1,13 @@
+<div class="width-control">
+  <h2 mat-dialog-title>{{ director.name }}</h2>
+  <mat-dialog-content>
+    <p><strong>Bio:</strong> {{ director.bio }}</p>
+    <p><strong>Birth Date:</strong> {{ director.birth | date : "longDate" }}</p>
+    <p *ngIf="director.death">
+      <strong>Death Date:</strong> {{ director.death | date : "longDate" }}
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Close</button>
+  </mat-dialog-actions>
+</div>

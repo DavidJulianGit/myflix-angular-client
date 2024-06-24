@@ -1,0 +1,26 @@
+/* user-login-form.component.scss */
+
+.full-width {
+  width: 100%;
+}
+
+/* This ensures that the button inside the input does not push the width */
+.mat-form-field {
+  width: 100%;
+}
+
+/* Ensure the button is properly aligned */
+.mat-form-field button.mat-icon-button {
+  margin: 0;
+  padding: 0;
+  line-height: 0; /* Ensures button doesn't affect input height */
+}
+
+/* Prevent input from exceeding the form field size */
+.mat-input-element {
+  padding-right: 36px; /* Space for the button, to prevent overlap */
+}
+
+.button-pos-correction {
+  width: 100%; /* Make the button fill the width */
+}

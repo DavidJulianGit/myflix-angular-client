@@ -1,63 +1,77 @@
-<!-- src/app/user-registration-form/user-registration-form.component.html -->
-<mat-card>
+<mat-card class="mat-card-padding">
   <mat-card-header>
-    <mat-card-title>Sign Up!</mat-card-title>
+    <mat-card-title>Sign Up</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content style="margin-top: 1rem">
     <form>
-      <mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
         <input
           matInput
           [(ngModel)]="userData.firstname"
-          placeholder="firstname"
+          placeholder="First Name"
           type="text"
           name="firstname"
           required
         />
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
         <input
           matInput
           [(ngModel)]="userData.lastname"
-          placeholder="lastname"
+          placeholder="Last Name"
           type="text"
           name="lastname"
           required
         />
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
         <input
           matInput
           [(ngModel)]="userData.password"
-          type="password"
-          placeholder="password"
+          [type]="hidePassword ? 'password' : 'text'"
+          placeholder="Password"
           name="password"
           required
         />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="togglePasswordVisibility()"
+          type="button"
+        >
+          <mat-icon>{{
+            hidePassword ? "visibility" : "visibility_off"
+          }}</mat-icon>
+        </button>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
         <input
           matInput
           [(ngModel)]="userData.email"
           type="email"
-          placeholder="email"
+          placeholder="Email"
           name="email"
           required
         />
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
         <input
           matInput
           [(ngModel)]="userData.birthday"
           type="date"
-          placeholder="birthday"
+          placeholder="Birthday"
           name="birthday"
         />
       </mat-form-field>
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="registerUser()" color="primary">
+    <button
+      mat-flat-button
+      (click)="registerUser()"
+      color="primary"
+      class="button-pos-correction"
+    >
       Sign Up
     </button>
   </mat-card-actions>
