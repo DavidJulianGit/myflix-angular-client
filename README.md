@@ -28,7 +28,7 @@ To run the myFlix Angular Client locally, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/myflix-angular-client.git
+   git clone https://github.com/DavidJulianGit/myflix-angular-client.git
    ```
 2. **Navigate to the project directory:**
 
