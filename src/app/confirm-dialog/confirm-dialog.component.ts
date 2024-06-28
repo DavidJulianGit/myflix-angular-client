@@ -1,29 +1,26 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
+/**
+ * Component for displaying a confirmation dialog for account deletion.
+ */
 @Component({
   selector: 'app-confirm-dialog',
-  template: `
-    <h2 mat-dialog-title>Confirm Account Deletion</h2>
-    <mat-dialog-content>
-      Are you sure you want to delete your account? This action cannot be
-      undone.
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="onCancel()">Cancel</button>
-      <button mat-raised-button color="warn" (click)="onConfirm()">
-        Delete
-      </button>
-    </mat-dialog-actions>
-  `,
+  templateUrl: './confirm-dialog.component.html',
+  styleUrls: ['./confirm-dialog.component.scss'],
 })
 export class ConfirmDialogComponent {
   constructor(public dialogRef: MatDialogRef<ConfirmDialogComponent>) {}
-
+  /**
+   * Handles the confirm action by closing the dialog with a true value.
+   */
   onConfirm(): void {
     this.dialogRef.close(true);
   }
 
+  /**
+   * Handles the cancel action by closing the dialog with a false value.
+   */
   onCancel(): void {
     this.dialogRef.close(false);
   }

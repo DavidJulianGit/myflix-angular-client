@@ -1,0 +1,19 @@
+{
+  "entryPoints": ["src"],
+  "entryPointStrategy": "expand",
+  "out": "./docs",
+  "tsconfig": "tsconfig.json",
+  "exclude": [
+    "**/*.spec.ts",
+    "**/app-routing.module.ts",
+    "**/app.module.ts",
+    "**/app.component.ts"
+  ],
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "name": "My Angular App Documentation",
+  "readme": "README.md",
+  "includeVersion": true,
+  "disableSources": false
+}

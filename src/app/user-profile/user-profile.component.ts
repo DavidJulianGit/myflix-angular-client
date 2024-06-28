@@ -1,17 +1,17 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { FetchApiDataService } from '../fetch-api-data.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-
+import { FetchApiDataService } from '../fetch-api-data.service';
 import { DirectorDetailsComponent } from '../director-details/director-details.component';
 import { GenreDetailsComponent } from '../genre-details/genre-details.component';
 import { MovieDetailsComponent } from '../movie-details/movie-details.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
+/**
+ * Component for managing user profile information and actions.
+ */
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -39,6 +39,14 @@ export class UserProfileComponent implements OnInit {
   updateUserDataURL: string = '';
   showFavoriteMovies: boolean = true;
 
+  /**
+   * Constructor of UserProfileComponent.
+   * @param dialog MatDialog service for opening dialogs.
+   * @param fetchApiData FetchApiDataService for making API requests.
+   * @param router Router for navigation.
+   * @param snackBar MatSnackBar for displaying notifications.
+   * @param datePipe DatePipe for date formatting.
+   */
   constructor(
     public dialog: MatDialog,
     private fetchApiData: FetchApiDataService,
@@ -48,40 +56,46 @@ export class UserProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Load user data and token from local storage
     this.localUser = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log('users birthday', this.localUser.birthday);
+
     this.token = localStorage.getItem('token') || '';
 
-    // Format birthday for input field
     this.localUser.birthday = this.formatDateForInput(this.localUser.birthday);
 
-    // get favorites
     this.getFavoriteMovies();
 
-    // String the user has to input in order to enable deleting his account
     this.stringToDeleteAccount = `Delete account ${this.localUser.email}`;
   }
 
+  /**
+   * Formats date string for input field.
+   * @param dateString Date string to format.
+   * @returns Formatted date string ('yyyy-MM-dd') or empty string if input is falsy.
+   */
   formatDateForInput(dateString: string): string {
-    // Ensure dateString is not null or empty
     if (!dateString) return '';
-
-    // Convert to Date object
     const date = new Date(dateString);
-
-    // Use DatePipe to format date
     return this.datePipe.transform(date, 'yyyy-MM-dd') || '';
   }
 
+  /**
+   * Toggles visibility of passwordreadability.
+   */
   togglePasswordVisibility(): void {
     this.passwordShown = !this.passwordShown;
   }
 
+  /**
+   * Toggles display of favorite movies section.
+   */
   toggleFavoriteMovies(): void {
     this.showFavoriteMovies = !this.showFavoriteMovies;
   }
 
+  /**
+   * Updates user data (firstname, lastname, email, birthday) via API request.
+   * Displays success or error message using MatSnackBar.
+   */
   updateUserData(): void {
     const data = {
       firstname: this.localUser.firstname,
@@ -92,12 +106,9 @@ export class UserProfileComponent implements OnInit {
 
     this.fetchApiData.editUser(data).subscribe(
       (response: any) => {
-        console.log('Update successful:', this.extractResponseData(response));
-
-        // Optionally update local user data if necessary
         this.localUser = response;
         localStorage.setItem('user', JSON.stringify(this.localUser));
-        // Format birthday for input field
+
         this.localUser.birthday = this.formatDateForInput(
           this.localUser.birthday
         );
@@ -106,8 +117,6 @@ export class UserProfileComponent implements OnInit {
       },
       (error) => {
         console.error('Error updating user data:', error);
-
-        // Show error message using snackbar
         this.snackBar.open(
           'Failed to update profile. Please try again.',
           'Close'
@@ -116,6 +125,10 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  /**
+   * Changes user password via API request.
+   * Displays success or error message using MatSnackBar.
+   */
   changePassword(): void {
     const data = {
       firstname: this.localUser.firstname,
@@ -143,30 +156,26 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  // opens the ConfirmDialogComponent
   openDeleteDialog(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleteUser(); // Call delete method only if user confirmed
+        this.deleteUser();
       } else {
         console.log('Deletion canceled by user.');
       }
     });
   }
 
-  // Method to confirm and delete user account
+  /**
+   * Deletes user account via API request.
+   * Logs out user after successful deletion and displays success or error message using MatSnackBar.
+   */
   deleteUser(): void {
     this.fetchApiData.deleteUser().subscribe({
       next: (response) => {
-        console.log(response.message); // Log the response message
-
-        // Clear user from localStorage
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-
-        this.router.navigate(['']); // Navigate to login after deletion
+        this.logout();
 
         this.snackBar.open('Your account has been deleted.', 'Close', {
           duration: 3000,
@@ -179,6 +188,10 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Fetches favorite movies for the current user.
+   * Updates `favoriteMovies` array based on API response.
+   */
   getFavoriteMovies() {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
       this.favoriteMovies = resp?.filter((movie: any) =>
@@ -187,18 +200,26 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Adds a movie to the user's list of favorite movies via API request.
+   * Updates `favoriteMovies` and `localUser` data upon successful addition.
+   * @param movieId ID of the movie to add to favorites.
+   */
   addFavoriteMovie(movieId: string): void {
     this.fetchApiData.addFavoriteMovie(movieId).subscribe((result) => {
-      console.log(result);
       this.favoriteMovies.push(result);
       this.localUser.favoriteMovies.push(movieId);
       localStorage.setItem('user', JSON.stringify(this.localUser));
     });
   }
 
+  /**
+   * Removes a movie from the user's list of favorite movies via API request.
+   * Updates `favoriteMovies` and `localUser` data upon successful removal.
+   * @param movieId ID of the movie to remove from favorites.
+   */
   removeFavoriteMovie(movieId: string): void {
     this.fetchApiData.deleteFavoriteMovie(movieId).subscribe((result) => {
-      console.log(result);
       this.favoriteMovies = this.favoriteMovies.filter(
         (movie) => movie._id !== movieId
       );
@@ -209,12 +230,18 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Logs out the current user by removing user and token from localStorage and navigating to welcome page.
+   */
   logout(): void {
     this.router.navigate(['welcome']);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
   }
 
+  /**
+   * Redirects the user to the movies page.
+   */
   redirectMovieCard(): void {
     this.router.navigate(['movies']);
   }
@@ -239,10 +266,20 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Checks if a movie is marked as favorite by the current user.
+   * @param movieId ID of the movie to check.
+   * @returns True if the movie is marked as favorite, false otherwise.
+   */
   isFavorite(movieId: string): boolean {
     return this.localUser.favoriteMovies.includes(movieId);
   }
 
+  /**
+   * Toggles the favorite status of a movie for the current user.
+   * If the movie is already a favorite, it removes it; otherwise, it adds it.
+   * @param movieId ID of the movie to toggle favorite status.
+   */
   toggleFavorite(movieId: string): void {
     if (this.isFavorite(movieId)) {
       this.fetchApiData.deleteFavoriteMovie(movieId).subscribe((result) => {
@@ -257,11 +294,5 @@ export class UserProfileComponent implements OnInit {
         localStorage.setItem('user', JSON.stringify(this.localUser));
       });
     }
-  }
-
-  // Non-typed response extraction
-  private extractResponseData(res: Response): any {
-    const body = res;
-    return body || {};
   }
 }
